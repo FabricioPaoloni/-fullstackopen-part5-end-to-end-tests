@@ -1,5 +1,6 @@
 const { test, expect, beforeEach, describe } = require('@playwright/test')
-import { loginWith  } from './helper'
+import { loginWith, createNewBlog  } from './helper'
+
 
 describe('Blog app', () => {
     beforeEach(async ({ page, request }) => {
@@ -39,7 +40,7 @@ describe('Blog app', () => {
 
         test('wrong username or password must not log in', async ({ page }) => {
             //wrong password login attempt must fail
-            loginWith(page, 'testinguser', 'wrong')
+            loginWith(page, 'testinguser', 'wrongpass')
 
             await expect(page.getByText('Error: wrong credentials')).toBeVisible()
             await expect(page.getByLabel('username')).toBeVisible()
@@ -51,19 +52,27 @@ describe('Blog app', () => {
     describe('When logged in', () => {
         beforeEach(async ({ page }) => {
             //login
-            loginWith(page, 'testinguser', 'testingpassword')
+            await loginWith(page, 'testinguser', 'testingpassword')
         })
 
         test('a new blog can be created', async ({ page }) => {
-            //click in the create new blog button so the app displays the form
-            await page.getByRole('button', { name: 'create new blog'}).click()
-            await page.getByLabel('title:').fill('testing the creation of a new blog - Exercise 5.19')
-            await page.getByLabel('author:').fill('Testing user')
-            await page.getByLabel('url:').fill('http://localhost:5173/blogs/exercise5.19')
-            await page.getByLabel('likes:').fill('519')
-            await page.getByRole('button', { name: 'Create Blog' }).click()
+            //createNewBlog call
+            await createNewBlog(page)
 
-            await expect(page.getByText('New blog created: testing the creation of a new blog - Exercise 5.19 by Testing user')).toBeVisible
+            await expect(page.getByText('testing the creation of a new blog - Exercise 5.19 by Testing user')).toBeVisible
+            
+        })
+
+        test('a blog can be liked', async ({ page }) => {
+            //create new blog call
+            await createNewBlog(page)
+
+            //click the view button so the app shows the full blog's info
+            await page.getByRole('button', { name: 'view' }).click()
+            await page.getByRole('button', { name: 'like' }).click()
+
+            await expect(page.getByText('likes: 520')).toBeVisible
+
         })
     })
 
