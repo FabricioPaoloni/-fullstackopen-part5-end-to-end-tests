@@ -33,19 +33,19 @@ To run the end to end tests, first you have to execute two terminals process, on
 
     - initialize backend with testing database in a terminal located at *backend's project folder*:
 
-        ~ *npm run start:test*
+        ~ npm run start:test
 
     - initialize frontend in a terminal located at *bloglist-frontend project's folder*:
 
-        ~ *npm run dev*
+        ~ npm run dev
 
 Then you can run in a third terminal situated in the *./end-to-end-tests folder* the following scripts (after executing the 2 terminal's process for frontend and backend):
 
-    ~*npm run test*
+    ~ npm run test
     
     to run the end to end tests (terminal located at ./end-to-end-tests folder); or
 
-    ~ *npm run test:report* 
+    ~ npm run test:report
     
     to access the playwright report (terminal located at ./end-to-end-tests folder)
 
