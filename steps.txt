@@ -1,0 +1,229 @@
+Exercise 5.1: Blog List frontend, step 1:
+    1. Clone the application from GitHub with the command: 
+    done
+    2. Remove the git configuration of the cloned application:
+        cd bloglist-frontend   // go to cloned repository
+            rm -rf .git
+    done
+    3. npm install
+    done
+    3.a proxy configuration
+
+    4. Implement login functionality to the frontend. The token     returned with a successful login is saved to the application's  state user.
+    4.1 adding login from
+    done
+    4.2 adding logic to the login from
+        services/login.js 
+        - done
+        implement logic on APP.js 
+        - done
+
+    4.3 conditional rendering for the login form:
+     If a user is not logged in, only the login form is visible.
+     If the user is logged-in, the name of the user and a list of   blogs is shown.
+    done.
+
+Exercise 5.2: Blog List Frontend, step 2
+
+Make the login 'permanent' by using the local storage. Also, implement a way to log out.
+Ensure the browser does not remember the details of the user after logging out.
+
+    1. save the user to local storage and implemente another useEffect hook to read he local storage each time the app is iniciated
+    done
+    2. create a handleLogout event handler to clear the 'user' state variable and the localStorage variable named 'loggedBlogListUser'
+    done
+    3. add a button to logout wich invote the handleLogout method
+    done
+    -COMPLETED-
+
+Exercise 5.3: Expand your application to allow a logged-in user to add new blogs
+    I have to create a form that sends blog info to the backend
+    POST to /api/blogs with the form info and the user info
+    1. "create" function to post new blogs, file /services/blogs, create token variable and setToken function to manage the user info
+    -done
+    2. update the token in the handleLogin function that handles the log in of a user
+    -done
+    3. create the form with title, author, url and likes inputs and a submit button
+    -done
+    4. create the state for those inputs
+    -done
+    5. create the handleCreateBlog event handler
+    -done
+    tested manually a few times. Works fine
+    -COMPLETED-
+
+Exercise 5.4: Blog List Frontend, step 4
+Implement notifications that inform the user about successful and unsuccessful operations at the top of the page. For example, when a new blog is added, the following notification can be shown (example image). Failed login can show the following notification (example image). The notifications must be visible for a few seconds. It is not compulsory to add colors.
+    -COMPLETED-
+
+5.5 Blog List Frontend, step 5
+Change the form for creating blog posts so that it is only displayed when appropriate. Use functionality similar to what was shown earlier in this part of the course material. If you wish to do so, you can use the Togglable component defined in part 5.
+By default the form is not visible, It expands when button create new blog is clicked. The form hides again after a new blog is created or the cancel button is pressed.
+    1. I will use a Togglable component like in the course, so i've to create that component
+    -done
+    2. extract the blogForm to its own component
+    -done, working fine
+    3. Wrap the blogForm inside this new component
+    -done, working fine
+
+5.6 Blog List Frontend, step 6
+Separate the form for creating a new blog into its own component (if you have not already done so), and move all the states required for creating a new blog to this component.
+The component must work like the NoteForm component from the material of this part.
+    1. Extract BlogForm to its own component
+    -done in the prev Exercise
+    2. move the state to this new component
+    -done
+    -COMPLETED-
+
+5.7 Blog List Frontend, step 7
+Let's add a button to each blog, which controls whether all of the details about the blog are shown or not.
+Full details of the blog open when the button is clicked.
+And the details are hidden when the button is clicked again.
+    1. add the show button in Blog component
+    -done
+    2. add the functionallity that adds the extra info 
+    -done
+    3. add the like button (dummy at this moment)
+    -done
+    -COMPLETED-
+
+5.8: Blog List Frontend, step 8
+Implement the functionality for the like button. Likes are increased by making an HTTP PUT request to the unique address of the blog post in the backend.
+Since the backend operation replaces the entire blog post, you will have to send all of its fields in the request body. If you wanted to add a like to the following blog post: (web example)
+You would have to make an HTTP PUT request to the address /api/blogs/5a43fde2cbd20b12a2c34e91 with the following request data: (web example)
+The backend has to be updated too to handle the user reference.
+    1. add HTTP PUT request managment in the backend (already done previously)
+    2. edited http PUT in backend so it uses userExtractor middleware to prevent unauthorized PUT requests
+    -done
+    3. add like button functionality
+    -done
+    -COMPLETED-
+
+5.9: Blog List Frontend, step 9
+I don't have the problem described, move to next exercise.
+
+5.10: Blog List Frontend, step 10
+Modify the application to sort the blog posts by the number of likes. The Sorting can be done with the array sort method.
+    1. sort the blog array of objects
+    -done
+
+5.11: Blog List Frontend, step 11
+Add a new button for deleting blog posts. Also, implement the logic for deleting blog posts in the frontend.
+Show the button for deleting a blog post only if the blog post was added by the user.
+    1. add delete service in /services/blogs.js
+    -done
+    2. add the delete button
+    -done
+    3. make visible only if user is the creator comparing usernames
+    -done
+    4. add logic to delete button
+    -done; had to add populate() to the POST METHOD in the backend used for creating new blogs in order to show the user info when creating a new blog
+    -COMPLETED-
+
+5.12: Blog List Frontend, step 12
+Add ESlint to the project. Define the configuration according to your liking. Fix all of the linter errors.
+Vite has installed ESlint to the project by default, so all that's left for you to do is define your desired configuration in the eslint.config.js file.
+-COMPLETED-
+
+5.13 - Blog List Tests - step 1
+Make a test, which checks that the component displaying a blog renders the blog's title and author, but does not render its URL or number of likes by default.
+Add CSS classes to the component to help the testing as necessary.
+    1. install libraries for react testing: 
+        - vitest and jsdom -done
+        - react-testing-library and jest-dom - done
+    2 - configuration for tests: 
+        - add script to package.json - done
+        - create testSetup.js file in the project root  - done
+    3. create a test for Blog.jsx component
+        a. blog displays 'title' - done
+        b. blog displays 'author' - done
+        c. blog doesn't display 'url' - done
+        d. blog doesn't display 'likes' - done
+    -COMPLETED-
+
+
+5.14: Blog List Tests, step 2
+Make a test, which checks that the blog's URL and number of likes are shown when the button controlling the shown details has been clicked.
+    1- install user-event library -done
+    2- import the new library userEvent -done
+    3- create new test using userEvent to click de VIEW button and check for url and likes to be defined - done
+    -COMPLETED-
+
+5.15: Blog List Tests, step 3
+Make a test, which ensures that if the like button is clicked twice, the event handler the component received as props is called twice.
+    1- i have to use mock functions and userEvent library, click twice the LIKE button and check for the mock function to be called 2 times -done
+    -COMPLETED-
+
+5.16: Blog List Tests, step 4
+Make a test for the new blog form. The test should check, 
+that the form calls the event handler it received as props with the right details when a new blog is created.
+    1. create new file /src/components/BlogForm.test.jsx -done
+    2. import libraries -done
+    3. test the 4 inputs fields and test that the Create Blog button calls the funcion and does it with the right parameters -done
+    -COMPLETED-
+
+5.17: Blog List End To End Testing, step 1
+Create a new npm project for tests and configure Playwright there.
+Make a test to ensure that the application displays the login form by default.
+    1. npm init playwright@latest -done
+    2. define npm script for running tests and test reports in package.json -done
+    3. make an npm script for the backend, which will enable it to be started in testing mode, i.e. so that NODE_ENV gets the value test. -done
+    3. make the test file and write the test. -done
+    -COMPLETED-
+
+5.18: Blog List End To End Testing, step 2
+Do the tests for login. Test both successful and failed login. For tests, create a user in the beforeEach block.
+    1. modify the backend so it has a new controller for testing
+        a. Let's create a new router for the tests inside the controllers folder, in the testing.js file -done
+        b. and add it to the backend only if the application is run in test-mode -done
+    2. add the RESET call in the test and add a user for testing -done
+
+5.19: Blog List End To End Testing, step 3
+Create a test that verifies that a logged in user can create a blog. The body of the test may look like the following
+    1. Created a helper.js file with loginWith() helper function to make easier the login -done
+    2. Create a test that attempt to create a new blog -done
+    -COMPLETED-
+
+5.20: Blog List End To End Testing, step 4
+Do a test that makes sure the blog can be liked.
+    -COMPLETED-
+
+5.21: Blog List End To End Testing, step 5
+Make a test that ensures that the user who added the blog can delete the blog. 
+If you use the window.confirm dialog in the delete operation, you may have to Google how to use the dialog in the Playwright tests.
+    -COMPLETED-
+
+5.22: Blog List End To End Testing, step 6
+Make a test that ensures that only the user who added the blog sees the blog's delete button.
+    1. login and creating the new blog - done
+    2. logout - done
+    3. login with second user - done
+    4. check for 'delete blog' button NOT to be visible - done
+    -COMPLETED-
+
+5.23: Blog List End To End Testing, step 7
+Do a test that ensures that the blogs are arranged in the order according to the likes, the blog with the most likes first.
+This task is significantly more challenging than the previous ones.
+    1. i will create 3 blogs with likes 10, 30 and 20 
+    - done
+    2. the blogs should appear in the following order: 30 likes, 20 likes and 10 likes 
+    - done
+    3. we create and array of blogs (using the class selector '.blogs')
+            let blogsArray = await page.locator('.blog').all()
+            -done
+            now we have an array of blogs in positions [0], [1]. [2]
+    3. in order to check the positions, we should click de VIEW button of each and ASSERT that each element contains the text 'likes: 30', 
+    'likes: 20' and 'likes: 10' using the .toContainText() playwright's function
+            await blogsArray[0].getByRole('button', { name: 'view' }).click()
+            await expect(blogsArray[0]).toContainText('likes: 30')
+
+            await blogsArray[1].getByRole('button', { name: 'view' }).click()
+            await expect(blogsArray[1]).toContainText('likes: 20')
+
+            await blogsArray[2].getByRole('button', { name: 'view' }).click()
+            await expect(blogsArray[2]).toContainText('likes: 10')
+
+            -done
+    -COMPLETED-
+
+SECTION 5 COMPLETED
