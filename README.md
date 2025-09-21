@@ -2,13 +2,13 @@
 
 FullStackOpen's Section 5 has been splitted in 2 different projects/repositories
 
-    - unit tests are found in another repository:
+- unit tests are found in another repository:
     
     https://github.com/FabricioPaoloni/fullstackopen-part5-unit-tests
     
-     in 2 different files under the names 'Blog.test.jsx' and 'BlogForm.test.jsx'. It contains the resolution of exercises from 1 to 16.
+    in 2 different files under the names 'Blog.test.jsx' and 'BlogForm.test.jsx'. It contains the resolution of exercises from 1 to 16.
 
-    - end to end tests are found in this repository, inside the folder '/tests' in the file 'blog_app.spec.js'. It contains the resolution of exercises from 17 to 23.
+- end to end tests are found in this repository, inside the folder '/tests' in the file 'blog_app.spec.js'. It contains the resolution of exercises from 17 to 23.
 
 I used *Playwright* library to complete the end to end tests (exercise 5.17 to 5.23)
 
