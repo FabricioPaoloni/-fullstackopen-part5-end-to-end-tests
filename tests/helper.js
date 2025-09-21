@@ -15,4 +15,21 @@ const createNewBlog = async (page) => {
     //click the create blog button
     await page.getByRole('button', { name: 'Create Blog' }).click()
 }
-export { loginWith, createNewBlog }
+
+const createOtherBlog = async (page, title, author, url, likes, first) => {
+    if (first) {
+        //click in the create new blog button so the app displays the form
+        await page.getByRole('button', { name: 'create new blog' }).click()
+    }
+
+    //add blog info
+    await page.getByLabel('title:').fill(title)
+    await page.getByLabel('author:').fill(author)
+    await page.getByLabel('url:').fill(url)
+    await page.getByLabel('likes:').fill(likes)
+    //click the create blog button
+    await page.getByRole('button', { name: 'Create Blog' }).click()
+    await page.getByText(`${title} by ${author} - view`).waitFor()
+}
+
+export { loginWith, createNewBlog, createOtherBlog }

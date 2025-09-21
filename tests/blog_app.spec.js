@@ -1,5 +1,5 @@
 const { test, expect, beforeEach, describe } = require('@playwright/test')
-import { loginWith, createNewBlog  } from './helper'
+import { loginWith, createNewBlog, createOtherBlog } from './helper'
 
 
 describe('Blog app', () => {
@@ -12,7 +12,13 @@ describe('Blog app', () => {
                 password: 'testingpassword'
             }
         })
-
+        await request.post('http://localhost:3003/api/users', {
+            data: {
+                name: 'Second Testing user',
+                username: 'seconduser',
+                password: 'testingpassword'
+            }
+        })
 
         await page.goto('http://localhost:5173')
     })
@@ -60,7 +66,7 @@ describe('Blog app', () => {
             await createNewBlog(page)
 
             await expect(page.getByText('testing the creation of a new blog - Exercise 5.19 by Testing user')).toBeVisible
-            
+
         })
 
         test('a blog can be liked', async ({ page }) => {
@@ -87,6 +93,47 @@ describe('Blog app', () => {
             await page.getByRole('button', { name: 'delete blog' }).click()
 
             expect(page.getByText('Blog deleted: testing the creation of a new blog - Exercise 5.19 by Testing user')).toBeVisible
+
+        })
+
+        test('only the user who added the blog sees the blog\'s delete button', async ({ page }) => {
+            //create new blog call
+            await createNewBlog(page)
+
+            //logout with testinguser
+            await page.getByRole('button', { name: 'logout' }).click()
+            //login with seconduser
+            await loginWith(page, 'seconduser', 'testingpassword')
+
+            //expand blog
+            await page.getByRole('button', { name: 'view' }).click()
+
+            expect(page.getByRole('button', { name: 'delete blog' })).not.toBeVisible()
+
+        })
+
+        test('blogs should appear from most liked to less liked', async ({ page }) => {
+            //create other blog call
+            await createOtherBlog(page, 'First Blog with 10 likes should appear 3rd', 'Exercise 5.23', 'testing.com/exercise5.23/10likes', '10', true)
+            await createOtherBlog(page, 'Second Blog with 30 likes should appear 1st', 'Exercise 5.23', 'testing.com/exercise5.23/30likes', '30', false)
+            await createOtherBlog(page, 'Third Blog with 20 likes should appear 2nd', 'Exercise 5.23', 'testing.com/exercise5.23/20likes', '20', false)
+
+            let blogsArray = await page.locator('.blog').all()
+
+            //user page.pause() to debug the last part
+            // await page.pause()
+
+            //checks first position 
+            await blogsArray[0].getByRole('button', { name: 'view' }).click()
+            await expect(blogsArray[0]).toContainText('likes: 30')
+
+            //checks second position
+            await blogsArray[1].getByRole('button', { name: 'view' }).click()
+            await expect(blogsArray[1]).toContainText('likes: 20')
+
+            //checks third position
+            await blogsArray[2].getByRole('button', { name: 'view' }).click()
+            await expect(blogsArray[2]).toContainText('likes: 10')
 
         })
     })
